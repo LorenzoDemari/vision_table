@@ -1,0 +1,26 @@
+<launch>
+   
+       <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" />
+
+	<arg name="marker_size" default="2.0" />
+	<arg name="max_new_marker_error" default="0.08" />
+	<arg name="max_track_error" default="0.2" />
+	<arg name="cam_img_topic" default="/kinect2/hd/points" />
+	<arg name="cam_info_topic" default="/kinect2/hd/camera_info" />
+	<arg name="output_frame" default="/kinect2_rgb_optical_frame" />
+	<arg name="dim_med_filter" default="0" />
+	<arg name="bundle_file1" default="$(find vision)/Bundles/bundle100.xml" />
+	<arg name="bundle_file2" default="$(find vision)/Bundles/bundle104.xml" />
+	<arg name="bundle_file3" default="$(find vision)/Bundles/bundle108.xml" />
+	<arg name="bundle_file4" default="$(find vision)/Bundles/bundle112.xml" />
+	<arg name="bundle_world_centre" default="$(find vision)/Bundles/bundle_world_centre.xml" />
+	<arg name="bundle_world_x_direction" default="$(find vision)/Bundles/bundle_world_x_direction.xml" />
+	<arg name="bundle_world_y_direction" default="$(find vision)/Bundles/bundle_world_y_direction.xml" />
+
+	<node name="ar_track_alvar" pkg="ar_track_alvar" type="findMarkerBundles" respawn="false" output="screen" launch-prefix="xterm -e" args="$(arg marker_size) $(arg max_new_marker_error) $(arg max_track_error) $(arg cam_img_topic) $(arg cam_info_topic) $(arg output_frame) $(arg dim_med_filter) $(arg bundle_file1) $(arg bundle_file2) $(arg bundle_file3) $(arg bundle_file4) $(arg bundle_world_centre) $(arg bundle_world_x_direction) $(arg bundle_world_y_direction)" />
+
+	<node name="world_frame" pkg="vision" type="new_frame_node" respawn="false" output="screen" launch-prefix="xterm -e" />
+
+        <node pkg="rviz" type="rviz" name="rviz" />
+
+</launch>
